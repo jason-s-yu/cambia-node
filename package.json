@@ -1,0 +1,20 @@
+{
+  "name": "cambia-service",
+  "version": "0.1.0",
+  "main": "index.js",
+  "repository": "https://github.com/jason-s-yu/cambia-node.git",
+  "author": "jason-s-yu <jsyu@caltech.edu>",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "express": "^4.17.1",
+    "socket.io": "^2.3.0",
+    "typescript": "^3.9.3"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.6",
+    "@types/socket.io": "^2.1.8",
+    "@types/typescript": "^2.0.0",
+    "ts-node-dev": "^1.0.0-pre.44"
+  }
+}
