@@ -1,0 +1,31 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Game {
+  duration    Int?
+  id          String  @id @default(uuid())
+  playerCount Int?
+  Match       Match[]
+}
+
+model Match {
+  gameId String
+  id     Int    @default(autoincrement()) @id
+  userId String
+  Game   Game   @relation(fields: [gameId], references: [id])
+  User   User   @relation(fields: [userId], references: [id])
+}
+
+model User {
+  elo      Int?
+  email    String  @unique
+  id       String  @id @default(uuid())
+  username String?
+  Match    Match[]
+}
