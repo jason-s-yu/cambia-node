@@ -1,6 +1,9 @@
 # Prisma
 datamodel*.prisma
 
+# Output
+build/
+
 # Logs
 logs
 *.log
