@@ -9,7 +9,7 @@ datasource db {
 
 model Game {
   duration    Int?
-  id          String  @id @default(uuid())
+  id          String  @default(dbgenerated()) @id
   playerCount Int?
   Match       Match[]
 }
@@ -25,7 +25,8 @@ model Match {
 model User {
   elo      Int?
   email    String  @unique
-  id       String  @id @default(uuid())
+  id       String  @default(dbgenerated()) @id
+  password String?
   username String?
   Match    Match[]
 }
