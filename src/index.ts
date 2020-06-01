@@ -7,7 +7,6 @@ import dotenv from 'dotenv';
 import { Server } from 'http';
 import { handleConnection } from './services/matchmaking';
 import { requestLogger } from './utils';
-import { authenticateJWT } from './controllers/user';
 
 dotenv.config({ path: 'prisma/.env' });
 
