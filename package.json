@@ -42,8 +42,7 @@
     "ts-node-dev": "^1.0.0-pre.44"
   },
   "scripts": {
-    "preinstall": "npx prisma introspect",
-    "postinstall": "npx prisma generate",
+    "postinstall": "npx prisma introspect && npx prisma generate",
     "dev": "nodemon",
     "build": "gulp",
     "serve": "node build/src/index",
