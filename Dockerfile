@@ -10,4 +10,4 @@ RUN yarn build
 
 CMD ["yarn", "serve"]
 
-EXPOSE 8080
+EXPOSE 3000
