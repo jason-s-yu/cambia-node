@@ -1,12 +1,12 @@
-import express from 'express';
+import express, { Express } from 'express';
 import socket from 'socket.io';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
+import http from 'http';
 import { api } from './api';
 import dotenv from 'dotenv';
-import { Server } from 'http';
 import { handleConnection } from './services/matchmaking';
-import { requestLogger } from './utils';
+import { logger, requestLogger } from './utils';
 
 dotenv.config({ path: 'prisma/.env' });
 
@@ -18,7 +18,12 @@ app.use(cookieParser(''));
 
 app.use('/api', api);
 
-const server: Server = app.listen(3000, () => console.log(`Listening on port ${3000}!`));
-const io: socket.Server = socket.listen(server);
+const server: http.Server = http.createServer(app);
+
+server.listen(3000, () => {
+  logger.info(`Listening on port 3000.`);
+})
+
+const io: socket.Server = new socket.Server(server);
 
 handleConnection(io);

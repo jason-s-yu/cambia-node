@@ -13,8 +13,8 @@ const prisma: PrismaClient = new PrismaClient();
  */
 export const getUser = async (id?: string, email?: string) => {
   let user;
-  if (id) user = await prisma.user.findOne({ where: { id }});
-  else if (email) user = await prisma.user.findOne({ where: { email } });
+  if (id) user = await prisma.user.findUnique({ where: { id }});
+  else if (email) user = await prisma.user.findUnique({ where: { email } });
   else throw new EmptyInputError('Must specify user ID or email');
 
   if (user) {
@@ -25,7 +25,7 @@ export const getUser = async (id?: string, email?: string) => {
 };
 
 export const getElo = async (id: string) => {
-  const elo: number = (await prisma.user.findOne({
+  const elo: number = (await prisma.user.findUnique({
     where: { id },
     select: {
       elo: true
@@ -42,7 +42,7 @@ export const updateElo = async (id: string, type: 'set' | 'add' | 'take', amount
       data: { elo: amount }
     });
   } else if (type == 'add') {
-    const { elo } = await prisma.user.findOne({
+    const { elo } = await prisma.user.findUnique({
       where: { id },
       select: { elo: true }
     })
@@ -51,7 +51,7 @@ export const updateElo = async (id: string, type: 'set' | 'add' | 'take', amount
       data: { elo: elo + amount }
     });
   } else if (type == 'take') {
-    const { elo } = await prisma.user.findOne({
+    const { elo } = await prisma.user.findUnique({
       where: { id },
       select: { elo: true }
     })
@@ -80,7 +80,7 @@ export const getAllUsers = async () => {
  */
 export const createUser = async (email: string, username: string, password: string) => {
   if (username.match(/[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/)) throw new InvalidInputError('Username cannot contain a special character');
-  else if (await prisma.user.findOne({ where: { email }})) {
+  else if (await prisma.user.findUnique({ where: { email }})) {
     throw new AlreadyExistsError(`Account with email ${email} already exists`);
   }
   password = await argon2.hash(password);
@@ -91,7 +91,7 @@ export const createUser = async (email: string, username: string, password: stri
 };
 
 export const authenticateUser = async (email: string, password: string) => {
-  const user = await prisma.user.findOne({
+  const user = await prisma.user.findUnique({
     where: { email },
     select: {
       id: true,

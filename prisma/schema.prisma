@@ -8,25 +8,25 @@ datasource db {
 }
 
 model Game {
+  id          String  @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
   duration    Int?
-  id          String  @default(dbgenerated()) @id
   playerCount Int?
   Match       Match[]
 }
 
 model Match {
-  gameId String
-  id     Int    @default(autoincrement()) @id
-  userId String
+  id     Int    @id @default(autoincrement())
+  userId String @db.Uuid
+  gameId String @db.Uuid
   Game   Game   @relation(fields: [gameId], references: [id])
   User   User   @relation(fields: [userId], references: [id])
 }
 
 model User {
+  id       String  @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  username String? @db.VarChar(255)
+  email    String  @unique @db.VarChar(255)
+  password String? @db.VarChar(255)
   elo      Int?
-  email    String  @unique
-  id       String  @default(dbgenerated()) @id
-  password String?
-  username String?
   Match    Match[]
 }
