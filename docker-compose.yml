@@ -1,4 +1,4 @@
-version: '3.8'
+version: '3.9'
 services:
 
   service:
@@ -11,7 +11,7 @@ services:
     image: cambia:latest
   
   postgres-db:
-    container_name: postgres
+    container_name: postgres-cambia
     restart: always
     ports:
       - 5432:5432
@@ -25,4 +25,4 @@ services:
       - cambia-postgres:/var/lib/postgresql/data
 
 volumes:
-  cambia-postgres: ~
+  cambia-postgres:
