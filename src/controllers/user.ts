@@ -2,7 +2,6 @@ import { PrismaClient } from '@prisma/client';
 import argon2 from 'argon2';
 import { EmptyInputError, NotFoundError, InvalidInputError, AlreadyExistsError } from '../types/errors';
 import jwt from 'jsonwebtoken';
-import { Token, DecodedToken } from 'jwt';
 import { isDevMode } from '../utils';
 
 const prisma: PrismaClient = new PrismaClient();
@@ -100,6 +99,9 @@ export const authenticateUser = async (email: string, password: string) => {
       password: true
     }
   });
+  if (!user) {
+    return false;
+  }
   try {
     if (await argon2.verify(user.password, password)) {
       return jwt.sign({ id: user.id, email: user.email, username: user.username }, 'devmode', { expiresIn: '1d' });

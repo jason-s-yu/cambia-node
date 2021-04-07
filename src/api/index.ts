@@ -4,8 +4,10 @@ import { router as authRouter } from './auth';
 
 export const api: Router = Router();
 
-api.get('/', (request: Request, response: Response) => {
-  response.send('hello');
+api.get('/', (_request: Request, response: Response) => {
+  response.json({
+    status: true
+  });
 });
 api.use(authRouter);
 api.use('/user', userRouter);

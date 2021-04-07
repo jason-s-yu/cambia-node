@@ -12,24 +12,24 @@ router.post('/create', async (request: Request, response: Response) => {
   } catch (error) {
     if (error instanceof AlreadyExistsError) {
       response.status(403)
-              .send(error.message);
+        .send(error.message);
     } else {
       console.error(error);
       response.status(500)
-              .send(error.message);
+        .send(error.message);
     }
     return;
   }
 
   if (user) {
     response.status(200)
-            .json(user);
+      .json(user);
   }
 });
 
 router.get('/all', async (request: Request, response: Response) => {
   response.status(200)
-          .json(await getAllUsers());
+    .json(await getAllUsers());
 });
 
 router.post('/get', async (request: Request, response: Response) => {
@@ -40,15 +40,15 @@ router.post('/get', async (request: Request, response: Response) => {
   } catch (error) {
     if (error instanceof EmptyInputError) {
       response.status(400)
-              .send('ID or email must be specified.');
+        .send('ID or email must be specified.');
     } else {
       response.status(500)
-              .send(error);
+        .send(error);
     }
     return;
   }
   response.status(200)
-          .json(user);
+    .json(user);
 });
 
 router.post('/elo/set', async (request: Request, response: Response) => {

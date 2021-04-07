@@ -3,6 +3,7 @@ datamodel*.prisma
 
 # Output
 build/
+dist/
 
 # Logs
 logs

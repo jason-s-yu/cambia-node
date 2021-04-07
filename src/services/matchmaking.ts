@@ -10,16 +10,15 @@ const game: { [key: string]: string; } = {};
 
 export const handleConnection = (io: socket.Server) => {
   io.use(async (socket, next) => {
-    console.log(socket.handshake.query);
     if (socket.handshake.query && socket.handshake.query.token) {
-      const user = await authenticateJWT(socket.handshake.query.token);
+      const user = await authenticateJWT(socket.handshake.query.token as any);
       if (user) {
         console.log('User authenticated', user)
         next();
       }
     }
   }).on('connection', async socket => {
-    const user = await authenticateJWT(socket.handshake.query.token) as DecodedToken;
+    const user = await authenticateJWT(socket.handshake.query.token as any) as DecodedToken;
     logger.info(`User ${user.id} connected (${user.email})`);
 
     socket.on('looking for match', async () => {
@@ -52,7 +51,7 @@ export const handleConnection = (io: socket.Server) => {
         socket.emit('match found', { otherPlayer: found, otherSocketId: socket.id, code: joinCode });
         socket.to(otherUser.socketId).emit('match found', { otherPlayer: user.id, otherSocketId: socket.id, code: joinCode });
       }
-    }).on('accept match', (code, otherId, otherSocketId) => {
+    }).on('accept match', (code: string, otherId: string, otherSocketId: string) => {
       logger.info(`${user.id} accepted match`);
 
       game[user.id] = socket.id;
