@@ -34,23 +34,41 @@ const loggerFormat = printf(({ level, message, timestamp }) => {
   return `[${timestamp}] ${level}: ${message}`;
 });
 
+const loggerOptions = {
+  console: {
+    handleExceptions: true,
+    format: combine(
+      format.colorize(),
+      format.timestamp({
+        format: 'YYYY-MM-DD HH:mm:ss',
+      }),
+      loggerFormat
+    ),
+  },
+  file: {
+    format: combine(
+      format.timestamp({
+        format: 'YYYY-MM-DD HH:mm:ss',
+      }),
+      loggerFormat
+    ),
+  },
+};
+
 export const logger = createLogger({
   level: 'info',
-  format: combine(
-    format.colorize(),
-    format.timestamp({
-      format: 'YYYY-MM-DD HH:mm:ss'
-    }),
-    loggerFormat
-  ),
   transports: [
     new transports.File({
       filename: `logs/${formatDate(new Date())}-error.log`,
-      level: 'error'
+      level: 'error',
+      ...loggerOptions.file,
+    }),
+    new transports.File({
+      filename: `logs/${formatDate(new Date())}.log`,
+      ...loggerOptions.file,
     }),
     new transports.Console({
-      format: loggerFormat,
-      level: 'info'
+      ...loggerOptions.console,
     }),
-  ]
+  ],
 });
